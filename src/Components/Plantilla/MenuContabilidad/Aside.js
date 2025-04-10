@@ -8,6 +8,7 @@ const Aside = () => {
   const [finanzasOpen, setFinanzasOpen] = useState(false);
   const [generalOpen, setGeneralOpen] = useState(false);
   const [filialesList, setFilialesList] = useState([]);
+  const [hovered, setHovered] = useState(null);
   const navigate = useNavigate();
   const { ObtenerFiliales } = useContextFilial();
 
@@ -38,6 +39,9 @@ const Aside = () => {
       "question"
     );
   };
+
+  const handleMouseEnter = (id) => setHovered(id);
+  const handleMouseLeave = () => setHovered(null); 
 
   return (
     <aside
@@ -92,7 +96,13 @@ const Aside = () => {
               <Link
                 to="/homeContabilidad"
                 className="nav-link d-flex align-items-center py-2 px-3 rounded mb-2"
-                style={{ color: "#000" }}
+                style={{
+                  color: "#000",
+                  boxShadow: hovered === "home" ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none", // Aplica la sombra solo si está hover
+                  transition: "box-shadow 0.3s",
+                }}
+                onMouseEnter={() => handleMouseEnter("home")}
+                onMouseLeave={handleMouseLeave}
               >
                 <i
                   className="nav-icon fas fa-home me-2"
@@ -111,7 +121,11 @@ const Aside = () => {
                   background: "transparent",
                   border: "none",
                   color: "#000",
+                  boxShadow: hovered === "finanzas" ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none", // Aplica la sombra solo si está hover
+                  transition: "box-shadow 0.3s",
                 }}
+                onMouseEnter={() => handleMouseEnter("finanzas")}
+                onMouseLeave={handleMouseLeave}
               >
                 <i className="nav-icon fas fa-chart-line me-2"></i>
                 <p className="m-0 flex-grow-1">Finanzas por Filial</p>
@@ -127,7 +141,13 @@ const Aside = () => {
                         <Link
                           to={`/dashboard-finanzas-filial-${filial.nombre}`}
                           className="nav-link d-flex align-items-center py-2 px-3 rounded mb-2"
-                          style={{ color: "#000" }}
+                          style={{
+                            color: "#000",
+                            boxShadow: hovered === `filial-${filial.id}` ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none", 
+                            transition: "box-shadow 0.3s",
+                          }}
+                          onMouseEnter={() => handleMouseEnter(`filial-${filial.id}`)}
+                          onMouseLeave={handleMouseLeave}
                         >
                           <i className="nav-icon fas fa-building me-2"></i>
                           <p className="m-0">Filial {filial.nombre}</p>
@@ -152,7 +172,11 @@ const Aside = () => {
                   background: "transparent",
                   border: "none",
                   color: "#000",
+                  boxShadow: hovered === "general" ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none", // Aplica la sombra solo si está hover
+                  transition: "box-shadow 0.3s",
                 }}
+                onMouseEnter={() => handleMouseEnter("general")}
+                onMouseLeave={handleMouseLeave}
               >
                 <i className="nav-icon fas fa-university me-2"></i>
                 <p className="m-0 flex-grow-1">Dashboard General</p>
@@ -164,19 +188,31 @@ const Aside = () => {
                 <ul className="nav nav-pills nav-sidebar flex-column ps-4">
                   <li className="nav-item">
                     <Link
-                      to="/dashboard-general-finanzas"
+                      to="/dashboard-contabilidad/General-filial"
                       className="nav-link d-flex align-items-center py-2 px-3 rounded mb-2"
-                      style={{ color: "#000" }}
+                      style={{
+                        color: "#000",
+                        boxShadow: hovered === "general-filial" ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none", // Aplica la sombra solo si está hover
+                        transition: "box-shadow 0.3s",
+                      }}
+                      onMouseEnter={() => handleMouseEnter("general-filial")}
+                      onMouseLeave={handleMouseLeave}
                     >
                       <i className="nav-icon fas fa-chart-pie me-2"></i>
-                      <p className="m-0">General Finanzas</p>
+                      <p className="m-0">General Filial</p>
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link
-                      to="/dashboard-general-cooperativa"
+                      to="/dashboard-contabilidad/General-cooperativa"
                       className="nav-link d-flex align-items-center py-2 px-3 rounded mb-2"
-                      style={{ color: "#000" }}
+                      style={{
+                        color: "#000",
+                        boxShadow: hovered === "general-cooperativa" ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none", // Aplica la sombra solo si está hover
+                        transition: "box-shadow 0.3s",
+                      }}
+                      onMouseEnter={() => handleMouseEnter("general-cooperativa")}
+                      onMouseLeave={handleMouseLeave}
                     >
                       <i className="nav-icon fas fa-building me-2"></i>
                       <p className="m-0">General Cooperativa</p>

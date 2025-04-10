@@ -9,6 +9,7 @@ const Aside = () => {
   const [filialesOpen, setFilialesOpen] = useState(false);
   const [filialName, setFilialName] = useState(null);
   const navigate = useNavigate();
+  const [hovered, setHovered] = useState(null);
   const location = useLocation();
 
   // Acceder al contexto de Filial usando el hook correcto
@@ -70,6 +71,9 @@ const Aside = () => {
     );
   };
 
+  const handleMouseEnter = (id) => setHovered(id);
+  const handleMouseLeave = () => setHovered(null);
+
   const isActive = (path) => {
     return location.pathname === path
       ? "active bg-white text-dark shadow-lg rounded"
@@ -81,8 +85,8 @@ const Aside = () => {
       className="main-sidebar sidebar-dark-primary elevation-4 d-flex flex-column"
       style={{ backgroundColor: "#E0E0D6" }}
     >
-       {/* Logo */}
-       <div
+      {/* Logo */}
+      <div
         className="brand-link d-flex flex-column align-items-center justify-content-center p-3"
         style={{
           backgroundColor: "#F0F0E6",
@@ -107,7 +111,7 @@ const Aside = () => {
             borderRadius: "50%",
           }}
         />
-       <p
+        <p
           className="m-0"
           style={{
             fontSize: "1.8rem",
@@ -127,15 +131,26 @@ const Aside = () => {
           <ul className="nav nav-pills nav-sidebar flex-column">
             {/* Home */}
             <li className="nav-item">
-              <span className="nav-link d-flex align-items-center py-2 px-3 rounded mb-2">
+              <Link
+                to="/homeFilial"
+                className="nav-link d-flex align-items-center py-2 px-3 rounded mb-2"
+                style={{
+                  color: "#000",
+                  boxShadow:
+                    hovered === "home"
+                      ? "0px 4px 8px rgba(0, 0, 0, 0.3)"
+                      : "none", 
+                  transition: "box-shadow 0.3s",
+                }}
+                onMouseEnter={() => handleMouseEnter("home")}
+                onMouseLeave={handleMouseLeave}
+              >
                 <i
                   className="nav-icon fas fa-home me-2"
                   style={{ color: "#000" }}
                 ></i>
-                <p className="m-0" style={{ color: "#000" }}>
-                  Home
-                </p>
-              </span>
+                <p className="m-0">Home</p>
+              </Link>
             </li>
 
             {/* Filial */}
@@ -146,7 +161,14 @@ const Aside = () => {
                   backgroundColor: "transparent",
                   border: "none",
                   color: "#000",
+                  boxShadow:
+                    hovered === "finanzas"
+                      ? "0px 4px 8px rgba(0, 0, 0, 0.3)"
+                      : "none", // Aplica la sombra solo si está hover
+                  transition: "box-shadow 0.3s",
                 }}
+                onMouseEnter={() => handleMouseEnter("finanzas")}
+                onMouseLeave={handleMouseLeave}
                 onClick={() => setFilialesOpen(!filialesOpen)}
               >
                 <i

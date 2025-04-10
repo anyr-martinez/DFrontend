@@ -1,8 +1,10 @@
 import React from 'react';
-import { routes } from './Components/Routes/routes';
+import  routes  from '../src/Components/Routes/routes';
 import { RouterProvider } from 'react-router-dom';
+//import 'bootstrap/dist/css/bootstrap.min.css';
+//import './adminlte/dist/css/AdminLTE.min.css';
 import UserState from './Components/Context/user/UserState';
-import { FilialProvider } from './Components/Context/filial/FilialContext';  // Importar el proveedor del contexto Filial
+import { FilialProvider } from './Components/Context/filial/FilialContext';  
 import Modal from 'react-modal';
 
 // Definir el elemento 'app' de la aplicación

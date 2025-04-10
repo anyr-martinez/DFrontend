@@ -1,26 +1,52 @@
-import React from 'react';
+import React from "react";
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-} from 'react-router-dom';
+} from "react-router-dom";
 
-// RUTAS DE LOGEO
+// Login
 import Login from "../Login/Login";
 
-// RUTAS PARA LOS MENUS
+// Menús principales
 import HomeFilial from "../Login/MenuFilial/Home";
 import HomeGeneral from "../Login/MenuGeneral/Home";
 import HomeContabilidad from "../Login/MenuContabilidad/Home";
+import Contabilidad from "../DContabilidad/DashboardContabilidad";
+import General from "../DGeneral/DashboardGeneral";
 
-// Rutas de la aplicación
-export const routes = createBrowserRouter(
+// Dashboards dentro de contabilidad
+import DashboardGeneralFilial from "../Plantilla/DashboardContabilidad/GeneralFilial/Content";
+import DashboardGeneralCooperativa from "../Plantilla/DashboardContabilidad/GeneralCooperativa/Content";
+
+//Dashboards dentro de general
+import DashboardGeneral from "../Plantilla/DashboardGeneral/GeneralCooperativa/Content";
+import DashboardFilial from "../Plantilla/DashboardGeneral/GeneralFiliales/Content";
+
+
+const routes = createBrowserRouter(
   createRoutesFromElements(
-    <Route>
+    <>
       <Route path="/" element={<Login />} />
-      <Route path="/HomeFilial" element={<HomeFilial />} />
-      <Route path="/HomeGeneral" element={<HomeGeneral />} />
-      <Route path="/HomeContabilidad" element={<HomeContabilidad />} />
-    </Route>
+      <Route path="/homeFilial" element={<HomeFilial />} />
+      <Route path="/homeGeneral" element={<HomeGeneral />} />
+      <Route path="/homeContabilidad" element={<HomeContabilidad />} />
+
+      {/* Contabilidad con subrutas */}
+      <Route path="/dashboard-contabilidad" element={<Contabilidad />} >
+        <Route path="general-filial" element={<DashboardGeneralFilial />} />
+        <Route path="general-cooperativa" element={<DashboardGeneralCooperativa />} />
+       
+      </Route>
+        {/* General con subrutas */}
+        <Route path="/dashboard-general" element={<General />} >
+        <Route path="general-filial" element={<DashboardFilial />} />
+        <Route path="general-cooperativa" element={<DashboardGeneral />} />
+       
+      </Route>
+    </>
+
   )
 );
+
+export default routes;
