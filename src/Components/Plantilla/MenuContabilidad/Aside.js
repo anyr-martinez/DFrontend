@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { mostrarAlertaPregunta } from "../../SweetAlert/SweetAlert";
 import dashboard from "../../../assets/images/dashboard.png";
-import { useContextFilial } from "../../Context/filial/FilialContext";
+import { ListarFiliales } from "../../Configuration/ApiUrls";
+import { AxiosPublico } from "../../Axios/Axios";
 
 const Aside = () => {
   const [finanzasOpen, setFinanzasOpen] = useState(false);
@@ -10,20 +11,19 @@ const Aside = () => {
   const [filialesList, setFilialesList] = useState([]);
   const [hovered, setHovered] = useState(null);
   const navigate = useNavigate();
-  const { ObtenerFiliales } = useContextFilial();
 
   useEffect(() => {
     const fetchFiliales = async () => {
       try {
-        const allFiliales = await ObtenerFiliales();
-        setFilialesList(allFiliales);
+        const response = await AxiosPublico.get(ListarFiliales);
+        setFilialesList(response.data);
       } catch (error) {
         console.error("Error al obtener filiales:", error);
       }
     };
 
     fetchFiliales();
-  }, [ObtenerFiliales]);
+  }, []);
 
   const handleLogout = (e) => {
     localStorage.removeItem("token");
@@ -41,12 +41,12 @@ const Aside = () => {
   };
 
   const handleMouseEnter = (id) => setHovered(id);
-  const handleMouseLeave = () => setHovered(null); 
+  const handleMouseLeave = () => setHovered(null);
 
   return (
     <aside
       className="main-sidebar sidebar-dark-primary elevation-4 d-flex flex-column"
-      style={{ backgroundColor: "#E0E0D6" }}
+      style={{ backgroundColor: "#E0E0D6", minHeight: "100vh" }} // Asegura que la barra lateral ocupe todo el alto de la pantalla
     >
       {/* Logo */}
       <div
@@ -88,7 +88,7 @@ const Aside = () => {
       </div>
 
       {/* Menú */}
-      <div className="sidebar mt-3">
+      <div className="sidebar mt-3" style={{ flex: 1, overflowY: "auto" }}>
         <nav>
           <ul className="nav nav-pills nav-sidebar flex-column">
             {/* HOME */}
@@ -98,7 +98,7 @@ const Aside = () => {
                 className="nav-link d-flex align-items-center py-2 px-3 rounded mb-2"
                 style={{
                   color: "#000",
-                  boxShadow: hovered === "home" ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none", // Aplica la sombra solo si está hover
+                  boxShadow: hovered === "home" ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none",
                   transition: "box-shadow 0.3s",
                 }}
                 onMouseEnter={() => handleMouseEnter("home")}
@@ -121,7 +121,7 @@ const Aside = () => {
                   background: "transparent",
                   border: "none",
                   color: "#000",
-                  boxShadow: hovered === "finanzas" ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none", // Aplica la sombra solo si está hover
+                  boxShadow: hovered === "finanzas" ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none",
                   transition: "box-shadow 0.3s",
                 }}
                 onMouseEnter={() => handleMouseEnter("finanzas")}
@@ -134,16 +134,22 @@ const Aside = () => {
                 ></i>
               </button>
               {finanzasOpen && (
-                <ul className="nav nav-pills nav-sidebar flex-column ps-4">
+                <ul
+                  className="nav nav-pills nav-sidebar flex-column ps-4"
+                  style={{
+                    maxHeight: "300px", 
+                    overflowY: "auto",
+                  }}
+                >
                   {filialesList.length > 0 ? (
                     filialesList.map((filial) => (
                       <li className="nav-item" key={filial.id}>
                         <Link
-                          to={`/dashboard-finanzas-filial-${filial.nombre}`}
+                          to={`/dashboard-contabilidad/filial`}
                           className="nav-link d-flex align-items-center py-2 px-3 rounded mb-2"
                           style={{
                             color: "#000",
-                            boxShadow: hovered === `filial-${filial.id}` ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none", 
+                            boxShadow: hovered === `filial-${filial.id}` ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none",
                             transition: "box-shadow 0.3s",
                           }}
                           onMouseEnter={() => handleMouseEnter(`filial-${filial.id}`)}
@@ -172,7 +178,7 @@ const Aside = () => {
                   background: "transparent",
                   border: "none",
                   color: "#000",
-                  boxShadow: hovered === "general" ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none", // Aplica la sombra solo si está hover
+                  boxShadow: hovered === "general" ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none",
                   transition: "box-shadow 0.3s",
                 }}
                 onMouseEnter={() => handleMouseEnter("general")}
@@ -185,14 +191,20 @@ const Aside = () => {
                 ></i>
               </button>
               {generalOpen && (
-                <ul className="nav nav-pills nav-sidebar flex-column ps-4">
+                <ul
+                  className="nav nav-pills nav-sidebar flex-column ps-4"
+                  style={{
+                    maxHeight: "300px", 
+                    overflowY: "auto",
+                  }}
+                >
                   <li className="nav-item">
                     <Link
                       to="/dashboard-contabilidad/General-filial"
                       className="nav-link d-flex align-items-center py-2 px-3 rounded mb-2"
                       style={{
                         color: "#000",
-                        boxShadow: hovered === "general-filial" ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none", // Aplica la sombra solo si está hover
+                        boxShadow: hovered === "general-filial" ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none",
                         transition: "box-shadow 0.3s",
                       }}
                       onMouseEnter={() => handleMouseEnter("general-filial")}
@@ -208,7 +220,7 @@ const Aside = () => {
                       className="nav-link d-flex align-items-center py-2 px-3 rounded mb-2"
                       style={{
                         color: "#000",
-                        boxShadow: hovered === "general-cooperativa" ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none", // Aplica la sombra solo si está hover
+                        boxShadow: hovered === "general-cooperativa" ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none",
                         transition: "box-shadow 0.3s",
                       }}
                       onMouseEnter={() => handleMouseEnter("general-cooperativa")}

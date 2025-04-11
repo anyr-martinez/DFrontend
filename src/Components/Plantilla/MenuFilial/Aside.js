@@ -4,6 +4,7 @@ import { mostrarAlertaPregunta } from "../../SweetAlert/SweetAlert";
 import dashboard from "../../../assets/images/dashboard.png";
 import { useContextFilial } from "../../Context/filial/FilialContext";
 import { DesEncriptar } from "../../Encrypt/Crypto";
+import { useSessionStorage } from "../../Context/storage/useSessionStorage";
 
 const Aside = () => {
   const [filialesOpen, setFilialesOpen] = useState(false);
@@ -14,6 +15,10 @@ const Aside = () => {
 
   // Acceder al contexto de Filial usando el hook correcto
   const { ObtenerFilial, filial } = useContextFilial(); // Obtener la función y el estado del contexto
+
+  const [user] = useSessionStorage("user", null);
+
+  console.log("ID Filial desde useSessionStorage:", user?.id_filial);
 
   useEffect(() => {
     try {
@@ -139,7 +144,7 @@ const Aside = () => {
                   boxShadow:
                     hovered === "home"
                       ? "0px 4px 8px rgba(0, 0, 0, 0.3)"
-                      : "none", 
+                      : "none",
                   transition: "box-shadow 0.3s",
                 }}
                 onMouseEnter={() => handleMouseEnter("home")}
@@ -155,6 +160,7 @@ const Aside = () => {
 
             {/* Filial */}
             <li className="nav-item">
+              {/* Botón principal */}
               <button
                 className="nav-link d-flex align-items-center py-2 px-3 rounded mb-2"
                 style={{
@@ -162,12 +168,12 @@ const Aside = () => {
                   border: "none",
                   color: "#000",
                   boxShadow:
-                    hovered === "finanzas"
+                    hovered === "filial"
                       ? "0px 4px 8px rgba(0, 0, 0, 0.3)"
-                      : "none", // Aplica la sombra solo si está hover
+                      : "none",
                   transition: "box-shadow 0.3s",
                 }}
-                onMouseEnter={() => handleMouseEnter("finanzas")}
+                onMouseEnter={() => handleMouseEnter("filial")}
                 onMouseLeave={handleMouseLeave}
                 onClick={() => setFilialesOpen(!filialesOpen)}
               >
@@ -185,21 +191,32 @@ const Aside = () => {
                   style={{ color: "#000" }}
                 ></i>
               </button>
-              {filialesOpen && filialName ? (
-                <ul className="nav nav-pills nav-sidebar flex-column ps-4">
-                  <MenuItem
-                    path={`/dashboard-filial-${filialName}`}
-                    icon="fas fa-building"
-                    label={`Filial ${filialName}`}
-                    isActive={isActive}
-                  />
-                </ul>
-              ) : (
-                filialesOpen && (
-                  <p className="ps-4" style={{ color: "#000" }}>
-                    No se encontró ninguna filial asignada.
-                  </p>
-                ) // Cambié el color aquí
+
+              {/* Botón secundario con nombre de la filial */}
+              {filialesOpen && (
+                <Link
+                to={"/dashboard-filial/general-filiales"} 
+                className="nav-link d-flex align-items-center py-2 px-3 rounded mb-2 ms-3"
+                style={{
+                  backgroundColor: "transparent",
+                  border: "none",
+                  color: "#000",
+                  boxShadow:
+                    hovered === "filial-nombre"
+                      ? "0px 4px 8px rgba(0, 0, 0, 0.3)"
+                      : "none",
+                  transition: "box-shadow 0.3s",
+                  textDecoration: "none"
+                }}
+                onMouseEnter={() => handleMouseEnter("filial-nombre")}
+                onMouseLeave={handleMouseLeave}
+              >
+                <i className="nav-icon fas fa-map-marker-alt me-2" style={{ color: "#000" }}></i>
+                <p className="m-0" style={{ color: "#000" }}>
+                  {user?.filial_nombre || "No asignado"}
+                </p>
+              </Link>
+              
               )}
             </li>
           </ul>

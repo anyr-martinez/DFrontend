@@ -1,35 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { useContextUsuario } from "../../Context/user/UserContext";
-import { useContextFilial } from "../../Context/filial/FilialContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserTie } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
+import { useSessionStorage } from "../../Context/storage/useSessionStorage";
 
 const Header = () => {
   const { usuario } = useContextUsuario();
-  const [filial, setFilial] = useState(null); // Usamos un estado local para la filial
   const navigate = useNavigate();
+
+  const [filialData] = useSessionStorage("user", null); // Obtenemos los datos desde sessionStorage desencriptados
+
+  const [filial, setFilial] = useState(null);
   const [fechaRegistro, setFechaRegistro] = useState(null);
   const [rol, setRol] = useState("");
 
   useEffect(() => {
-    // Recuperamos los datos de filial desde sessionStorage
-    const filialNombre = sessionStorage.getItem("filial_nombre");
-    const filialId = sessionStorage.getItem("id_filial");
-
-    if (filialNombre && filialId) {
-      // Si hay datos en sessionStorage, los asignamos al estado de filial
-      setFilial({ nombre: filialNombre, id: filialId });
+    // Asignamos la filial desde el hook (si viene el nombre y el id)
+    if (filialData?.filial_nombre && filialData?.id_filial) {
+      setFilial({
+        nombre: filialData.filial_nombre,
+        id: filialData.id_filial,
+      });
     } else {
-      // Si no hay datos en sessionStorage, puedes manejarlo aquí
-      console.log("No se encontró la filial en sessionStorage");
+      console.log("No se encontró la filial en los datos desencriptados.");
     }
 
-    // Fecha de registro: Usamos la fecha actual
-    const now = new Date();
-    setFechaRegistro(now);
+    // Fecha de registro actual
+    setFechaRegistro(new Date());
 
-    // Asignamos el rol basado en el rol_id del usuario
+    // Asignamos el rol
     if (usuario) {
       switch (usuario.rol_id) {
         case 1:
@@ -45,12 +45,11 @@ const Header = () => {
           setRol("Rol desconocido");
       }
     }
-  }, [usuario]); // Dependemos solo de usuario, ya que la filial viene del sessionStorage
+  }, [usuario, filialData]);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    sessionStorage.removeItem("filial_nombre");
-    sessionStorage.removeItem("id_filial");
+    sessionStorage.removeItem("user"); 
     navigate("/");
   };
 
@@ -73,7 +72,7 @@ const Header = () => {
         <ul className="navbar-nav ml-auto">
           <li className="nav-item">
             <a className="nav-link d-flex align-items-center" href="#" data-toggle="modal" data-target="#userModal">
-              <FontAwesomeIcon icon={faUserTie} style={{ color: "#FF7F32" , fontSize: "30px"}} className="mr-2" />
+              <FontAwesomeIcon icon={faUserTie} style={{ color: "#FF7F32", fontSize: "30px" }} className="mr-2" />
               <span style={{ color: "#007236", fontWeight: "600", cursor: "pointer" }}>
                 {usuario ? `Bienvenido(a), ${usuario.nombre}` : "Invitado"}
                 {filial && filial.nombre ? (
@@ -81,7 +80,7 @@ const Header = () => {
                     {filial.nombre}
                   </strong>
                 ) : (
-                  <strong style={{ display: "block" }}> Siguatepeque</strong>
+                  <strong style={{ display: "block" }}>Filial</strong>
                 )}
               </span>
             </a>

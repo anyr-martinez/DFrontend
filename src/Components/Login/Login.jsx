@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
+import fondogr from "../../assets/images/fondogris.avif";
 import {
   mostrarAlerta,
   mostrarAlertaOK,
@@ -111,11 +112,13 @@ const Login = () => {
     <section
       className="vh-100"
       style={{
-        backgroundSize: "contain",
-        backgroundPosition: "center",
-        backgroundRepeat: "repeat",
-        backgroundColor: "#D3D3D3",
+        backgroundImage: `url(${fondogr})`, 
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat', 
+        backgroundPosition: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
       }}
+      
     >
       <div className="container py-5 h-100 d-flex justify-content-center align-items-center">
         <div className="col col-xl-5"> {/* Aumentamos el tamaño de la columna */}
@@ -127,6 +130,7 @@ const Login = () => {
               padding: "40px", 
               boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
               width: "100%", 
+        
             }}
           >
             <div className="card-body text-black text-center">

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { UserContext } from '../../Context/user/UserContext';
 import { useSessionStorage } from '../../Context/storage/useSessionStorage';
 import { AxiosPrivado, AxiosPublico } from "../../Axios/Axios";
-import { ListarUsuarios, CrearUsuario, ActualizarUsuario, EliminarUsuario, UsuarioActualizarContrasena } from "../../Configuration/ApiUrls";
+import { ListarUsuarios, CrearUsuario, ObtenerById, EliminarUsuario } from "../../Configuration/ApiUrls";
 
 const UserState = (props) => {
   const [usuario, setUser] = useSessionStorage("usuario", null);
@@ -30,6 +30,21 @@ const UserState = (props) => {
     }
   };
 
+  //Funcion para obtener por id el usuario
+  const obtenerUsuarioPorId = async (id) => {
+    try {
+      const respuesta = await AxiosPublico.get(`${ObtenerById}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return respuesta.data; // Devolvés el usuario
+    } catch (error) {
+      console.error("Error al obtener el usuario por ID:", error);
+      return null;
+    }
+  };
+  
   // Función para cerrar sesión
   const setCerrarSesion = () => {
     setUser(null);
@@ -62,28 +77,7 @@ const UserState = (props) => {
     }
   };
 
-  // Función para editar un usuario
-  const editarUsuario = async (usuarioEditado) => {
-    try {
-      const response = await AxiosPrivado.put(
-        `${ActualizarUsuario}/${usuarioEditado.id_usuario}`,
-        usuarioEditado,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setUsuarios((prevUsuarios) =>
-        prevUsuarios.map((usuario) =>
-          usuario.id_usuario === usuarioEditado.id_usuario ? response.data : usuario
-        )
-      );
-    } catch (error) {
-      console.error("Error al editar el usuario:", error);
-    }
-  };
-
+  
   // Función para eliminar un usuario
   const eliminarUsuario = async (id_usuario) => {
     try {
@@ -110,9 +104,9 @@ const UserState = (props) => {
         setLogin,
         setCerrarSesion,
         agregarUsuario,
-        editarUsuario,
         eliminarUsuario,
         obtenerUsuarios, 
+        obtenerUsuarioPorId,
         usuarios, 
       }}
     >
