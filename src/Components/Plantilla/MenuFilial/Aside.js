@@ -88,7 +88,7 @@ const Aside = () => {
   return (
     <aside
       className="main-sidebar sidebar-dark-primary elevation-4 d-flex flex-column"
-      style={{ backgroundColor: "#E0E0D6" }}
+      style={{ backgroundColor: "#E1E1E1" }}
     >
       {/* Logo */}
       <div
@@ -98,7 +98,7 @@ const Aside = () => {
           color: "#212529",
           fontWeight: "bold",
           textAlign: "center",
-          borderBottom: "6px solid #007236",
+          borderBottom: "6px solid #009846",
           borderRadius: "5 0 10px 10px",
         }}
       >
@@ -110,7 +110,7 @@ const Aside = () => {
             width: "100px",
             height: "100px",
             marginBottom: "10px",
-            border: "3px solid #007236",
+            border: "3px solid #009846",
             padding: "1px",
             backgroundColor: "#F0F0E6",
             borderRadius: "50%",
@@ -121,7 +121,7 @@ const Aside = () => {
           style={{
             fontSize: "1.8rem",
             fontWeight: "900",
-            color: "#007236",
+            color: "#009846",
             letterSpacing: "1px",
             fontFamily: "'Segoe UI', 'Roboto', sans-serif",
           }}

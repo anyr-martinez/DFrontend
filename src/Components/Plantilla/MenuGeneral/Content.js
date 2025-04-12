@@ -4,7 +4,7 @@ import logo from "../../../assets/images/logo.png";
 
 export default function Content() {
   return (
-    <div className="content-wrapper" style={{ backgroundColor: "#F0F0E6" }}>
+    <div className="content-wrapper" style={{ backgroundColor: "#f2f2f2" }}>
       {/* Content Header */}
       <div className="content-header d-flex justify-content-center" style={{ height: "30vh" }}>
         {/* Contenedor de la imagen */}

@@ -126,7 +126,7 @@ const Login = () => {
             className="card"
             style={{
               borderRadius: "2rem",
-              backgroundColor: "#F0F0E6",
+              backgroundColor: "#E8E8E8",
               padding: "40px", 
               boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
               width: "100%", 
@@ -135,7 +135,7 @@ const Login = () => {
           >
             <div className="card-body text-black text-center">
               {/* Logo */}
-              <div className="mb-4" style={{ marginLeft: "-8px", marginRight: "15px" }}>
+              <div className="mb-4" style={{ marginLeft: "-10px", marginRight: "20px" }}>
                 <img src={logo} alt="Logo" style={{ width: "350px" }} />
               </div>
   
@@ -160,7 +160,7 @@ const Login = () => {
                       top: "50%",
                       right: "10px",
                       transform: "translateY(-50%)",
-                      color: "#007236",
+                      color: "#009846",
                     }}
                   ></i>
                 </div>
@@ -181,7 +181,7 @@ const Login = () => {
                       top: "50%",
                       right: "10px",
                       transform: "translateY(-50%)",
-                      color: "#007236",
+                      color: "#009846",
                     }}
                   ></i>
                 </div>

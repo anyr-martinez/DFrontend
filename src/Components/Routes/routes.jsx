@@ -24,6 +24,7 @@ import DashboardPorFilial from "../Plantilla/DashboardContabilidad/Por_Filial/Co
 //Dashboards dentro de general
 import DashboardGeneral from "../Plantilla/DashboardGeneral/GeneralCooperativa/Content";
 import DashboardFilial from "../Plantilla/DashboardGeneral/GeneralFiliales/Content";
+import PorFilial from "../Plantilla/DashboardGeneral/Filial/Content";
 
 //Dashboard dentro de la filial
 import DashboardFilialAsignada from "../Plantilla/DashboardFilial/Filial/Content";
@@ -49,6 +50,7 @@ const routes = createBrowserRouter(
       <Route path="/dashboard-general" element={<General />}>
         <Route path="general-filial" element={<DashboardFilial />} />
         <Route path="general-cooperativa" element={<DashboardGeneral />} />
+        <Route path="por-filial" element={<PorFilial />} />
       </Route>
 
        {/* Filial con subrutas */}

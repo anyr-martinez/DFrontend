@@ -46,7 +46,11 @@ const Aside = () => {
   return (
     <aside
       className="main-sidebar sidebar-dark-primary elevation-4 d-flex flex-column"
-      style={{ backgroundColor: "#E0E0D6", minHeight: "100vh" }} // Asegura que la barra lateral ocupe todo el alto de la pantalla
+      style={{
+        backgroundColor: "#E1E1E1",
+        height: "100vh",
+        overflowY: "auto", 
+      }}
     >
       {/* Logo */}
       <div
@@ -56,7 +60,7 @@ const Aside = () => {
           color: "#212529",
           fontWeight: "bold",
           textAlign: "center",
-          borderBottom: "6px solid #007236",
+          borderBottom: "6px solid #009846",
         }}
       >
         <img
@@ -67,7 +71,7 @@ const Aside = () => {
             width: "100px",
             height: "100px",
             marginBottom: "10px",
-            border: "3px solid #007236",
+            border: "3px solid #009846",
             padding: "1px",
             backgroundColor: "#F0F0E6",
             borderRadius: "50%",
@@ -78,7 +82,7 @@ const Aside = () => {
           style={{
             fontSize: "1.8rem",
             fontWeight: "900",
-            color: "#007236",
+            color: "#009846",
             letterSpacing: "1px",
             fontFamily: "'Segoe UI', 'Roboto', sans-serif",
           }}
@@ -88,7 +92,7 @@ const Aside = () => {
       </div>
 
       {/* Menú */}
-      <div className="sidebar mt-3" style={{ flex: 1, overflowY: "auto" }}>
+      <div className="sidebar mt-3 px-2">
         <nav>
           <ul className="nav nav-pills nav-sidebar flex-column">
             {/* HOME */}
@@ -104,10 +108,7 @@ const Aside = () => {
                 onMouseEnter={() => handleMouseEnter("home")}
                 onMouseLeave={handleMouseLeave}
               >
-                <i
-                  className="nav-icon fas fa-home me-2"
-                  style={{ color: "#000" }}
-                ></i>
+                <i className="nav-icon fas fa-home me-2" style={{ color: "#000" }}></i>
                 <p className="m-0">Home</p>
               </Link>
             </li>
@@ -129,18 +130,10 @@ const Aside = () => {
               >
                 <i className="nav-icon fas fa-chart-line me-2"></i>
                 <p className="m-0 flex-grow-1">Finanzas por Filial</p>
-                <i
-                  className={`fas fa-chevron-${finanzasOpen ? "up" : "down"}`}
-                ></i>
+                <i className={`fas fa-chevron-${finanzasOpen ? "up" : "down"}`}></i>
               </button>
               {finanzasOpen && (
-                <ul
-                  className="nav nav-pills nav-sidebar flex-column ps-4"
-                  style={{
-                    maxHeight: "300px", 
-                    overflowY: "auto",
-                  }}
-                >
+                <ul className="nav nav-pills nav-sidebar flex-column ps-4">
                   {filialesList.length > 0 ? (
                     filialesList.map((filial) => (
                       <li className="nav-item" key={filial.id}>
@@ -149,7 +142,10 @@ const Aside = () => {
                           className="nav-link d-flex align-items-center py-2 px-3 rounded mb-2"
                           style={{
                             color: "#000",
-                            boxShadow: hovered === `filial-${filial.id}` ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none",
+                            boxShadow:
+                              hovered === `filial-${filial.id}`
+                                ? "0px 4px 8px rgba(0, 0, 0, 0.3)"
+                                : "none",
                             transition: "box-shadow 0.3s",
                           }}
                           onMouseEnter={() => handleMouseEnter(`filial-${filial.id}`)}
@@ -161,9 +157,7 @@ const Aside = () => {
                       </li>
                     ))
                   ) : (
-                    <li className="ps-4 text-dark">
-                      No hay filiales disponibles.
-                    </li>
+                    <li className="ps-4 text-dark">No hay filiales disponibles.</li>
                   )}
                 </ul>
               )}
@@ -186,25 +180,20 @@ const Aside = () => {
               >
                 <i className="nav-icon fas fa-university me-2"></i>
                 <p className="m-0 flex-grow-1">Dashboard General</p>
-                <i
-                  className={`fas fa-chevron-${generalOpen ? "up" : "down"}`}
-                ></i>
+                <i className={`fas fa-chevron-${generalOpen ? "up" : "down"}`}></i>
               </button>
               {generalOpen && (
-                <ul
-                  className="nav nav-pills nav-sidebar flex-column ps-4"
-                  style={{
-                    maxHeight: "300px", 
-                    overflowY: "auto",
-                  }}
-                >
+                <ul className="nav nav-pills nav-sidebar flex-column ps-4">
                   <li className="nav-item">
                     <Link
                       to="/dashboard-contabilidad/General-filial"
                       className="nav-link d-flex align-items-center py-2 px-3 rounded mb-2"
                       style={{
                         color: "#000",
-                        boxShadow: hovered === "general-filial" ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none",
+                        boxShadow:
+                          hovered === "general-filial"
+                            ? "0px 4px 8px rgba(0, 0, 0, 0.3)"
+                            : "none",
                         transition: "box-shadow 0.3s",
                       }}
                       onMouseEnter={() => handleMouseEnter("general-filial")}
@@ -220,7 +209,10 @@ const Aside = () => {
                       className="nav-link d-flex align-items-center py-2 px-3 rounded mb-2"
                       style={{
                         color: "#000",
-                        boxShadow: hovered === "general-cooperativa" ? "0px 4px 8px rgba(0, 0, 0, 0.3)" : "none",
+                        boxShadow:
+                          hovered === "general-cooperativa"
+                            ? "0px 4px 8px rgba(0, 0, 0, 0.3)"
+                            : "none",
                         transition: "box-shadow 0.3s",
                       }}
                       onMouseEnter={() => handleMouseEnter("general-cooperativa")}
@@ -238,7 +230,7 @@ const Aside = () => {
       </div>
 
       {/* Footer */}
-      <div className="sidebar-footer p-3 mt-auto text-center">
+      <div className="sidebar-footer p-3 text-center">
         <button
           onClick={handleLogout}
           className="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2"
