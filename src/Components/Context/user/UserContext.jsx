@@ -5,7 +5,7 @@ export const UserContext = createContext();
 export const useContextUsuario = () => useContext(UserContext);
 
 export const UserProvider = ({ children }) => {
-  const [usuario, setUsuario] = useState(null); // Inicia en null
+  const [usuario, setUsuario] = useState(null); 
   const [token, setToken] = useState(null);
 
   // Función para manejar login

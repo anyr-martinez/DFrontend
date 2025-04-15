@@ -13,8 +13,8 @@ const Aside = () => {
   const [hovered, setHovered] = useState(null);
   const location = useLocation();
 
-  // Acceder al contexto de Filial usando el hook correcto
-  const { ObtenerFilial, filial } = useContextFilial(); // Obtener la función y el estado del contexto
+  // Acceder al contexto de Filial usando el hook correcto 
+  const { ObtenerFilial, filial } = useContextFilial();
 
   const [user] = useSessionStorage("user", null);
 
@@ -34,7 +34,7 @@ const Aside = () => {
 
           if (idFilial) {
             // Usar la función del contexto para obtener la filial por id
-            ObtenerFilial(idFilial); // Llama a la función que obtendrá la filial desde la API
+            ObtenerFilial(idFilial);
           } else {
             setFilialName("No asignado");
           }
@@ -52,14 +52,14 @@ const Aside = () => {
       );
       setFilialName("Error en datos del usuario");
     }
-  }, [ObtenerFilial]); // Dependemos de la función ObtenerFilial
+  }, [ObtenerFilial]);
 
   useEffect(() => {
     // Si 'filial' está disponible, actualizar el nombre de la filial
     if (filial && filial.nombre) {
       setFilialName(filial.nombre);
     }
-  }, [filial]); // Depende de la filial obtenida
+  }, [filial]);
 
   const handleLogout = (e) => {
     localStorage.removeItem("token");
@@ -195,28 +195,30 @@ const Aside = () => {
               {/* Botón secundario con nombre de la filial */}
               {filialesOpen && (
                 <Link
-                to={"/dashboard-filial/general-filiales"} 
-                className="nav-link d-flex align-items-center py-2 px-3 rounded mb-2 ms-3"
-                style={{
-                  backgroundColor: "transparent",
-                  border: "none",
-                  color: "#000",
-                  boxShadow:
-                    hovered === "filial-nombre"
-                      ? "0px 4px 8px rgba(0, 0, 0, 0.3)"
-                      : "none",
-                  transition: "box-shadow 0.3s",
-                  textDecoration: "none"
-                }}
-                onMouseEnter={() => handleMouseEnter("filial-nombre")}
-                onMouseLeave={handleMouseLeave}
-              >
-                <i className="nav-icon fas fa-map-marker-alt me-2" style={{ color: "#000" }}></i>
-                <p className="m-0" style={{ color: "#000" }}>
-                  {user?.filial_nombre || "No asignado"}
-                </p>
-              </Link>
-              
+                  to={"/dashboard-filial/general-filiales"}
+                  className="nav-link d-flex align-items-center py-2 px-3 rounded mb-2 ms-3"
+                  style={{
+                    backgroundColor: "transparent",
+                    border: "none",
+                    color: "#000",
+                    boxShadow:
+                      hovered === "filial-nombre"
+                        ? "0px 4px 8px rgba(0, 0, 0, 0.3)"
+                        : "none",
+                    transition: "box-shadow 0.3s",
+                    textDecoration: "none",
+                  }}
+                  onMouseEnter={() => handleMouseEnter("filial-nombre")}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <i
+                    className="nav-icon fas fa-map-marker-alt me-2"
+                    style={{ color: "#000" }}
+                  ></i>
+                  <p className="m-0" style={{ color: "#000" }}>
+                    {user?.filial_nombre || "No asignado"}
+                  </p>
+                </Link>
               )}
             </li>
           </ul>

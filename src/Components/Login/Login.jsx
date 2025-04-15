@@ -17,7 +17,7 @@ const Login = () => {
   const [contrasena, setPassword] = useState("");
   const navigate = useNavigate();
   const { setLogin } = useContext(UserContext);
-  const [, setStoredUser] = useSessionStorage("user", {}); // Correcto, para almacenar los datos del usuario
+  const [, setStoredUser] = useSessionStorage("user", {}); 
 
   // Función para manejar el submit del formulario
   const handleSubmit = async (event) => {
@@ -35,10 +35,10 @@ const Login = () => {
         });
 
         if (response?.data.data && response.data.data.token) {
-          const { token, usuario, nombre, id, rol_id, rol_nombre, id_filial, filial_nombre } = response.data.data;
+          const { token, usuario, nombre, id, rol_id, rol_nombre, id_filial, filial_nombre, foto} = response.data.data;
       
           // Verificar los valores de los campos antes de guardarlos
-          console.log('Datos antes de guardar:', { token, usuario, rol_nombre, filial_nombre, id_filial });
+          console.log('Datos antes de guardar:', { token, usuario, rol_nombre, filial_nombre, id_filial, foto });
       
           // Si los valores están indefinidos, se asignan valores por defecto
           const rolNombre = rol_nombre || 'Rol no asignado';
@@ -54,6 +54,7 @@ const Login = () => {
                   rol_nombre: rolNombre,
                   id_filial: id_filial,
                   filial_nombre: filialNombre,
+                  foto: foto
               },
               token: token,
           });
@@ -65,7 +66,8 @@ const Login = () => {
               id_filial: id_filial,
               rol_nombre: rolNombre,
               filial_nombre: filialNombre,
-              nombre: nombre,  
+              nombre: nombre, 
+              foto: foto 
           });
       
           console.log('Datos guardados en sessionStorage:', {
@@ -75,6 +77,7 @@ const Login = () => {
               rol_nombre: rolNombre,
               filial_nombre: filialNombre,
               nombre: nombre, 
+              foto: foto
           });
       
           // Redirigir según el rol_id del usuario

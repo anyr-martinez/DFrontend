@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from "react";
-import { UserContext } from "../../../Context/user/UserContext"; // ajustá el path si está en otro lado
+import { UserContext } from "../../../Context/user/UserContext";
 
 export default function Content() {
   const { usuario } = useContext(UserContext);
-  const filialNombre = usuario?.filial || "Mi Filial"; // Fallback por si no hay usuario
+  const filialNombre = usuario?.filial || "Mi Filial";
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -20,25 +20,25 @@ export default function Content() {
               data: [45, 50, 60, 40, 55],
               backgroundColor: "#007236",
               borderColor: "#007236",
-              borderWidth: 1
+              borderWidth: 1,
             },
             {
               label: "Bajas",
               data: [10, 15, 12, 8, 14],
               backgroundColor: "#FF6600",
               borderColor: "#FF6600",
-              borderWidth: 1
-            }
-          ]
+              borderWidth: 1,
+            },
+          ],
         },
         options: {
           responsive: true,
           scales: {
             y: {
-              beginAtZero: true
-            }
-          }
-        }
+              beginAtZero: true,
+            },
+          },
+        },
       });
 
       new window.Chart(document.getElementById("lineChart"), {
@@ -51,13 +51,13 @@ export default function Content() {
               data: [5200, 6100, 5900, 6700, 7100],
               fill: false,
               borderColor: "#007236",
-              tension: 0.1
-            }
-          ]
+              tension: 0.1,
+            },
+          ],
         },
         options: {
-          responsive: true
-        }
+          responsive: true,
+        },
       });
 
       new window.Chart(document.getElementById("pieChart"), {
@@ -68,13 +68,13 @@ export default function Content() {
             {
               label: `Afiliados ${filialNombre}`,
               data: [420, 80],
-              backgroundColor: ["#007236", "#FF6600"]
-            }
-          ]
+              backgroundColor: ["#007236", "#FF6600"],
+            },
+          ],
         },
         options: {
-          responsive: true
-        }
+          responsive: true,
+        },
       });
     };
     document.body.appendChild(script);

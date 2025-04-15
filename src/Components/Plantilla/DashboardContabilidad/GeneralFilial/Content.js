@@ -15,7 +15,7 @@ export default function Content() {
           labels: ["Filial A", "Filial B", "Filial C", "Filial D"],
           datasets: [{
             label: "Ventas por Filial",
-            data: [120, 150, 180, 200], // Aquí deberías poner los datos dinámicos de cada filial
+            data: [120, 150, 180, 200], // datos dinámicos de cada filial
             backgroundColor: ["#007236", "#FF6600", "#F0F0E6", "#FF7F32"],
             borderColor: "#007236",
             borderWidth: 1

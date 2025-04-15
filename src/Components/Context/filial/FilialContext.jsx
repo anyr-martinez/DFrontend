@@ -3,7 +3,6 @@ import { AxiosPublico } from "../../Axios/Axios";
 import {
   CrearFilial,
   ListarFiliales,
-  ObtenerFilial,
 } from "../../Configuration/ApiUrls";
 import { useContextUsuario } from "../user/UserContext";
 

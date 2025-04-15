@@ -1,3 +1,4 @@
+import { Servidor } from "../../Configuration/ApiUrls";
 import React, { useState, useEffect } from "react";
 import { useContextUsuario } from "../../Context/user/UserContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,26 +11,27 @@ const Header = () => {
   const navigate = useNavigate();
 
   const [filialData] = useSessionStorage("user", null);
-
   const [filial, setFilial] = useState(null);
   const [fechaRegistro, setFechaRegistro] = useState(null);
   const [rol, setRol] = useState("");
 
   useEffect(() => {
-    // Asignamos la filial desde el hook (si viene el nombre y el id)
-    if (filialData?.filial_nombre && filialData?.id_filial) {
+    if (
+      filialData?.filial_nombre &&
+      filialData?.id_filial &&
+      filialData?.foto
+    ) {
       setFilial({
         nombre: filialData.filial_nombre,
         id: filialData.id_filial,
+        foto: filialData.foto,
       });
     } else {
       console.log("No se encontró la filial en los datos desencriptados.");
     }
 
-    // Fecha de registro actual
     setFechaRegistro(new Date());
 
-    // Asignamos el rol
     if (usuario) {
       switch (usuario.rol_id) {
         case 1:
@@ -104,11 +106,15 @@ const Header = () => {
                 {usuario ? `Bienvenido(a), ${usuario.nombre}` : "Invitado"}
                 {filial && filial.nombre ? (
                   <strong
-                    style={{ display: "block", textTransform: "uppercase", textAlign: "center" }}
+                    style={{
+                      display: "block",
+                      textTransform: "uppercase",
+                      textAlign: "center",
+                    }}
                   >
                     <i
-                      className="fas fa-map-marker-alt" 
-                      style={{ marginRight: "5px", color: "#ff0000"}}
+                      className="fas fa-map-marker-alt"
+                      style={{ marginRight: "5px", color: "#ff0000" }}
                     ></i>
                     {filial.nombre}
                   </strong>
@@ -175,11 +181,20 @@ const Header = () => {
               </button>
             </div>
             <div className="modal-body text-center">
-              <FontAwesomeIcon
-                icon={faUserTie}
-                size="4x"
-                style={{ color: "#FC4B08" }}
-                className="mb-3"
+              <img
+                src={
+                  usuario?.foto
+                    ? require(`../../../assets/imagenes/${usuario.foto}`)
+                    : "Foto"
+                }
+                alt="Foto de usuario"
+                className="rounded-circle mb-3"
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  objectFit: "cover",
+                  border: "3px solid #FC4B08",
+                }}
               />
               <h4 className="font-weight-bold" style={{ color: "#009846" }}>
                 {usuario?.nombre}
@@ -195,7 +210,7 @@ const Header = () => {
                 </p>
               )}
               <p>
-                <strong>Fecha de Registro:</strong>
+                <strong>Fecha de Registro:</strong>{" "}
                 {fechaRegistro
                   ? fechaRegistro.toLocaleDateString()
                   : "Cargando..."}

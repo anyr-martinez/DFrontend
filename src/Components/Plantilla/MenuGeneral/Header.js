@@ -79,26 +79,56 @@ const Header = () => {
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content" style={{ borderRadius: "12px", backgroundColor: "#F0F0E6", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
             <div className="modal-header" style={{ backgroundColor: "#009846", color: "#fff", borderTopLeftRadius: "12px", borderTopRightRadius: "12px" }}>
-              <h5 className="modal-title" id="userModalLabel">Perfil de Usuario</h5>
-              <button type="button" className="close text-white" data-dismiss="modal" aria-label="Close">
+            <h5 className="modal-title" id="userModalLabel">
+                Perfil de Usuario
+              </h5>
+              <button
+                type="button"
+                className="close text-white"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div className="modal-body text-center">
-              <FontAwesomeIcon icon={faUserTie} size="4x" style={{ color: "#FC4608" }} className="mb-3" />
+              <img
+                src={
+                  usuario?.foto
+                    ? require(`../../../assets/imagenes/${usuario.foto}`)
+                    : "Foto"
+                }
+                alt="Foto de usuario"
+                className="rounded-circle mb-3"
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  objectFit: "cover",
+                  border: "3px solid #FC4B08",
+                }}
+              />
               <h4 className="font-weight-bold" style={{ color: "#009846" }}>
                 {usuario?.nombre}
               </h4>
               <p className="text-muted">@{usuario?.usuario}</p>
               <hr />
-              <p><strong>Rol:</strong> {rol || "Cargando..."}</p>
               <p>
-                <strong>Fecha de Registro:</strong> 
-                {fechaRegistro ? fechaRegistro.toLocaleDateString() : "Cargando..."}
+                <strong>Rol:</strong> {rol || "Cargando..."}
+              </p>
+              <p>
+                <strong>Fecha de Registro:</strong>
+                {fechaRegistro
+                  ? fechaRegistro.toLocaleDateString()
+                  : "Cargando..."}
               </p>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn" style={{ backgroundColor: "#FC4608", color: "#fff" }} data-dismiss="modal">
+              <button
+                type="button"
+                className="btn"
+                style={{ backgroundColor: "#fc4608", color: "#fff" }}
+                data-dismiss="modal"
+              >
                 Cerrar
               </button>
             </div>

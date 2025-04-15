@@ -7,6 +7,7 @@ export const ListarUsuarios = '/api/usuarios/get';
 export const ObtenerById = '/api/usuarios/obtener';
 export const CrearUsuario = '/api/usuarios/create';
 export const EliminarUsuario = '/api/usuarios/delete';
+export const SubirFoto  = '/api/usuarios/subir-foto';
 
 //Rutas de filiales
 export const CrearFilial = '/api/filial/create';
