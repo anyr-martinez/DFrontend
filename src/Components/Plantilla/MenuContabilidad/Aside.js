@@ -47,7 +47,7 @@ const Aside = () => {
     <aside
       className="main-sidebar sidebar-dark-primary elevation-4 d-flex flex-column"
       style={{
-        backgroundColor: "#E1E1E1",
+        backgroundColor: "#dcdcdc",
         height: "100vh",
         overflowY: "auto", 
       }}

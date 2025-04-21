@@ -1,11 +1,13 @@
-import { Servidor, SubirFoto} from "../../Configuration/ApiUrls";
+import { Servidor } from "../../Configuration/ApiUrls";
 import React, { useState, useEffect } from "react";
 import { useContextUsuario } from "../../Context/user/UserContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserTie } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useSessionStorage } from "../../Context/storage/useSessionStorage";
-import { AxiosPublico} from "../../Axios/Axios";
+import { AxiosPublico } from "../../Axios/Axios";
+import { SubirFoto } from "../../Configuration/ApiUrls";
+import { mostrarAlertaOK } from "../../SweetAlert/SweetAlert";
 
 const Header = () => {
   const { usuario } = useContextUsuario();
@@ -15,9 +17,9 @@ const Header = () => {
   const [filial, setFilial] = useState(null);
   const [fechaRegistro, setFechaRegistro] = useState(null);
   const [rol, setRol] = useState("");
-
-  const [imagenPreview, setImagenPreview] = useState(null);
-  const [imagenArchivo, setImagenArchivo] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [isImageSelected, setIsImageSelected] = useState(false);
 
   useEffect(() => {
     if (
@@ -51,43 +53,41 @@ const Header = () => {
     }
   }, [usuario, filialData]);
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
+
+  const handleImageUpload = async () => {
+    if (!selectedImage || !usuario.id) {
+      console.error("Falta la imagen o el ID del usuario");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("foto", selectedImage); // nombre debe ser "foto"
+    formData.append("id", usuario.id); // incluir el ID del usuario
+
+    try {
+      const response = await AxiosPublico.post(SubirFoto, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      mostrarAlertaOK("Imagen Guardada Correctamente!");
+      console.log("Imagen subida correctamente:", response.data);
+    } catch (error) {
+      console.error("Error al subir la imagen:", error);
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("user");
     sessionStorage.removeItem("user");
     navigate("/");
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImagenArchivo(file);
-      setImagenPreview(URL.createObjectURL(file));
-    }
-  };
-
-  const subirFoto = async () => {
-    if (!imagenArchivo) return alert("Selecciona una imagen primero");
-
-    const formData = new FormData();
-    formData.append("foto", imagenArchivo);
-
-    try {
-      const response = await AxiosPublico(`${SubirFoto}${usuario.id}`, {
-        method: "PUT",
-        body: formData,
-      });
-
-      if (!response.ok) throw new Error("Error al subir la imagen");
-
-      const data = await response.json();
-
-      const updatedUser = { ...filialData, foto: data.foto };
-      sessionStorage.setItem("user", JSON.stringify(updatedUser));
-      window.location.reload(); // Recargar para ver la nueva imagen
-    } catch (error) {
-      console.error("Error:", error);
-      alert("No se pudo subir la imagen");
-    }
   };
 
   return (
@@ -98,12 +98,21 @@ const Header = () => {
       >
         <ul className="navbar-nav">
           <li className="nav-item">
-            <a className="nav-link" data-widget="pushmenu" href="#" role="button">
+            <a
+              className="nav-link"
+              data-widget="pushmenu"
+              href="#"
+              role="button"
+            >
               <i className="fas fa-bars" style={{ color: "#007236" }}></i>
             </a>
           </li>
           <li className="nav-item d-none d-sm-inline-block">
-            <a href="/" className="nav-link" style={{ color: "#009846", fontWeight: "700" }}>
+            <a
+              href="/"
+              className="nav-link"
+              style={{ color: "#009846", fontWeight: "700" }}
+            >
               Inicio
             </a>
           </li>
@@ -129,7 +138,7 @@ const Header = () => {
                   cursor: "pointer",
                 }}
               >
-                {usuario ? `Bienvenido(a), ${usuario.nombre}` : "Invitado"}
+                {usuario ? ` Bienvenido(a), ${usuario.nombre}` : "Invitado"}
                 {filial && filial.nombre ? (
                   <strong
                     style={{
@@ -138,12 +147,18 @@ const Header = () => {
                       textAlign: "center",
                     }}
                   >
-                    <i className="fas fa-map-marker-alt" style={{ marginRight: "5px", color: "#ff0000" }}></i>
+                    <i
+                      className="fas fa-map-marker-alt"
+                      style={{ marginRight: "5px", color: "#ff0000" }}
+                    ></i>
                     {filial.nombre}
                   </strong>
                 ) : (
                   <strong style={{ display: "block" }}>
-                    <i className="fas fa-building" style={{ marginRight: "5px" }}></i>
+                    <i
+                      className="fas fa-building"
+                      style={{ marginRight: "5px" }}
+                    ></i>
                     Filial
                   </strong>
                 )}
@@ -160,7 +175,6 @@ const Header = () => {
           )}
         </ul>
       </nav>
-
       {/* Modal de Usuario */}
       <div
         className="modal fade"
@@ -191,18 +205,25 @@ const Header = () => {
               <h5 className="modal-title" id="userModalLabel">
                 Perfil de Usuario
               </h5>
-              <button type="button" className="close text-white" data-dismiss="modal" aria-label="Close">
+              <button
+                type="button"
+                className="close text-white"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
+
             <div className="modal-body text-center">
+              {/* Imagen del usuario */}
               <img
                 src={
-                  imagenPreview
-                    ? imagenPreview
-                    : filial?.foto
-                    ? `${Servidor}/imagenes/${filial.foto}`
-                    : "https://via.placeholder.com/100"
+                  previewImage
+                    ? previewImage
+                    : usuario?.foto
+                    ? `${Servidor}/src/imagenes/${usuario.foto}`
+                    : ""
                 }
                 alt="Foto de usuario"
                 className="rounded-circle mb-3"
@@ -214,38 +235,34 @@ const Header = () => {
                 }}
               />
 
-              {/* Botón para cambiar foto */}
-              {!imagenArchivo && (
+              {/* Botón para seleccionar nueva imagen */}
+              <div className="mb-3">
                 <button
-                  className="btn btn-outline-success mb-3"
-                  onClick={() => document.getElementById("inputArchivoFoto").click()}
+                  className="btn btn-sm btn-outline-success"
+                  onClick={() => document.getElementById("inputImagen").click()}
                 >
                   Cambiar foto
                 </button>
+                <input
+                  type="file"
+                  accept="image/*"
+                  id="inputImagen"
+                  style={{ display: "none" }}
+                  onChange={handleImageChange}
+                />
+              </div>
+
+              {/* Botón para guardar imagen */}
+              {selectedImage && (
+                <button
+                  className="btn btn-success btn-sm mb-3"
+                  onClick={handleImageUpload}
+                >
+                  Guardar nueva foto
+                </button>
               )}
 
-              {/* Input invisible para seleccionar imagen */}
-              <input
-                id="inputArchivoFoto"
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                style={{ display: "none" }}
-              />
-
-              {/* Botón para subir la imagen */}
-              {imagenArchivo && (
-                <>
-                  <button
-                    className="btn btn-success mb-2"
-                    onClick={subirFoto}
-                    disabled={!imagenArchivo}
-                  >
-                    Subir foto
-                  </button>
-                </>
-              )}
-
+              {/* Información del usuario */}
               <h4 className="font-weight-bold" style={{ color: "#009846" }}>
                 {usuario?.nombre}
               </h4>
@@ -261,7 +278,9 @@ const Header = () => {
               )}
               <p>
                 <strong>Fecha de Registro:</strong>{" "}
-                {fechaRegistro ? fechaRegistro.toLocaleDateString() : "Cargando..."}
+                {fechaRegistro
+                  ? fechaRegistro.toLocaleDateString()
+                  : "Cargando..."}
               </p>
             </div>
 
@@ -269,7 +288,7 @@ const Header = () => {
               <button
                 type="button"
                 className="btn"
-                style={{ backgroundColor: "#fc4b08", color: "#fff" }}
+                style={{ backgroundColor: "#FC4B08", color: "#fff" }}
                 data-dismiss="modal"
               >
                 Cerrar

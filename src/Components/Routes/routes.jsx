@@ -28,11 +28,13 @@ import PorFilial from "../Plantilla/DashboardGeneral/Filial/Content";
 
 //Dashboard dentro de la filial
 import DashboardFilialAsignada from "../Plantilla/DashboardFilial/Filial/Content";
+import SubirFoto from "../Plantilla/MenuFilial/Header";
 
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <>
+       {/* Menus */}
       <Route path="/" element={<Login />} />
       <Route path="/homeFilial" element={<HomeFilial />} />
       <Route path="/homeGeneral" element={<HomeGeneral />} />
@@ -56,6 +58,7 @@ const routes = createBrowserRouter(
        {/* Filial con subrutas */}
        <Route path="/dashboard-filial" element={<Filial />} >
         <Route path="general-filiales" element={<DashboardFilialAsignada />} />
+        <Route path="	subir-foto" element={<SubirFoto />}/>
       </Route>
     </>
   )

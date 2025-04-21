@@ -8,6 +8,11 @@ export const UserProvider = ({ children }) => {
   const [usuario, setUsuario] = useState(null); 
   const [token, setToken] = useState(null);
 
+ //Actualizar usuario
+  const actualizarUsuario = (nuevoUsuario) => {
+    setUsuario(nuevoUsuario);
+  };
+
   // Función para manejar login
   const setLogin = (data) => {
     console.log(data)
@@ -26,7 +31,7 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ usuario, token, setLogin, setCerrarSesion }}>
+    <UserContext.Provider value={{ usuario, token, setLogin, setCerrarSesion, actualizarUsuario }}>
       {children}
     </UserContext.Provider>
   );

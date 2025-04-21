@@ -95,7 +95,7 @@ const Header = () => {
               <img
                 src={
                   usuario?.foto
-                    ? require(`../../../assets/imagenes/${usuario.foto}`)
+                    ? require(`../../../../public/imagenes/${usuario.foto}`)
                     : "Foto"
                 }
                 alt="Foto de usuario"

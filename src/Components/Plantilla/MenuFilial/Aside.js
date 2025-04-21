@@ -88,13 +88,13 @@ const Aside = () => {
   return (
     <aside
       className="main-sidebar sidebar-dark-primary elevation-4 d-flex flex-column"
-      style={{ backgroundColor: "#E1E1E1" }}
+      style={{ backgroundColor: "#dcdcdc" }}
     >
       {/* Logo */}
       <div
         className="brand-link d-flex flex-column align-items-center justify-content-center p-3"
         style={{
-          backgroundColor: "#F0F0E6",
+          backgroundColor: "#f6f6f6",
           color: "#212529",
           fontWeight: "bold",
           textAlign: "center",
