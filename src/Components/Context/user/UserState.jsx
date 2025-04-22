@@ -38,7 +38,7 @@ const UserState = (props) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      return respuesta.data; // Devolvés el usuario
+      return respuesta.data; 
     } catch (error) {
       console.error("Error al obtener el usuario por ID:", error);
       return null;
